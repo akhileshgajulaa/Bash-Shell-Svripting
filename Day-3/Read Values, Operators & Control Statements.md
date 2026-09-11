@@ -1,1115 +1,929 @@
-**Day 3 — Shell Scripting Notes**
+# Day 3 — Shell Scripting Notes
 
-**Read Values, Operators & Control Statements**
+## Read Values, Operators & Control Statements
 
 Today we move from **variables** to making scripts **interactive and intelligent**.
 
-The main idea is:
+The main idea:
 
+```
 Read input
-
-↓
-
+   ↓
 Store in variable
-
-↓
-
+   ↓
 Check condition using operators
-
-↓
-
+   ↓
 Take decision
-
-↓
-
+   ↓
 Execute required command
+```
 
-**1\. Reading Values in Shell Scripting**
+---
 
-We can take input from the user using the read command.
+## 1. Reading Values in Shell Scripting
+
+We can take input from the user using the `read` command.
 
 **Basic syntax**
 
+```bash
 read variable_name
+```
 
-Example:
+**Example**
 
-# !/bin/bash
-
+```bash
+#!/bin/bash
 echo "Enter your name:"
-
 read name
-
-echo "Hello \$name"
+echo "Hello $name"
+```
 
 Run:
 
+```bash
 ./script.sh
+```
 
 Output:
 
+```
 Enter your name:
-
 Akhilesh
-
 Hello Akhilesh
+```
 
-**read -p**
+### `read -p`
 
-Instead of using a separate echo, we can directly display the prompt:
+Instead of using a separate `echo`, we can directly display the prompt:
 
-# !/bin/bash
-
+```bash
+#!/bin/bash
 read -p "Enter your name: " name
+echo "Hello $name"
+```
 
-echo "Hello \$name"
+### Reading multiple values
 
-**Reading multiple values**
-
-# !/bin/bash
-
+```bash
+#!/bin/bash
 read -p "Enter your first name and age: " name age
-
-echo "Name: \$name"
-
-echo "Age: \$age"
+echo "Name: $name"
+echo "Age: $age"
+```
 
 Input:
 
+```
 Akhilesh 24
+```
 
 Output:
 
+```
 Name: Akhilesh
-
 Age: 24
+```
 
-**2\. Reading Passwords**
+---
 
-For sensitive input, use -s.
+## 2. Reading Passwords
 
+For sensitive input, use `-s`.
+
+```bash
 read -s -p "Enter password: " password
-
 echo
-
 echo "Password received"
+```
 
-\-s means the input is **not displayed on the terminal**.
+> `-s` means the input is **not displayed on the terminal**.
+> Note: This only hides the input while typing; it does not encrypt the value.
 
-Note: This only hides the input while typing; it does not encrypt the value.
+---
 
-**3\. Operators in Shell Scripting**
+## 3. Operators in Shell Scripting
 
 Operators are used to perform operations or compare values.
 
 Important categories:
 
-Arithmetic operators
+- Arithmetic operators
+- Comparison operators
+- Logical operators
+- String operators
 
-Comparison operators
+---
 
-Logical operators
-
-String operators
-
-**4\. Arithmetic Operators**
+## 4. Arithmetic Operators
 
 Arithmetic operators are used with numbers.
 
-| **Operator** | **Meaning**       |
-| ------------ | ----------------- |
-| +            | Addition          |
-| \-           | Subtraction       |
-| \*           | Multiplication    |
-| /            | Division          |
-| %            | Modulus/remainder |
-| \*\*         | Power             |
+| Operator | Meaning              |
+|----------|----------------------|
+| `+`      | Addition              |
+| `-`      | Subtraction           |
+| `*`      | Multiplication        |
+| `/`      | Division              |
+| `%`      | Modulus/remainder     |
+| `**`     | Power                 |
 
 **Example**
 
+```bash
 a=10
-
 b=5
-
-echo \$((a + b))
-
-echo \$((a - b))
-
-echo \$((a \* b))
-
-echo \$((a / b))
-
-echo \$((a % b))
+echo $((a + b))
+echo $((a - b))
+echo $((a * b))
+echo $((a / b))
+echo $((a % b))
+```
 
 Output:
 
+```
 15
-
 5
-
 50
-
 2
-
 0
+```
 
 The usual Bash arithmetic syntax is:
 
-\$((expression))
+```bash
+$((expression))
+```
 
-**5\. Comparison Operators**
+---
+
+## 5. Comparison Operators
 
 Comparison operators are mainly used to compare numbers.
 
-| **Operator** | **Meaning**           |
-| ------------ | --------------------- |
-| \-eq         | Equal                 |
-| \-ne         | Not equal             |
-| \-gt         | Greater than          |
-| \-lt         | Less than             |
-| \-ge         | Greater than or equal |
-| \-le         | Less than or equal    |
+| Operator | Meaning                  |
+|----------|--------------------------|
+| `-eq`    | Equal                    |
+| `-ne`    | Not equal                |
+| `-gt`    | Greater than             |
+| `-lt`    | Less than                |
+| `-ge`    | Greater than or equal    |
+| `-le`    | Less than or equal       |
 
-Example:
+**Example**
 
+```bash
 age=24
-
-if \[ "\$age" -ge 18 \]; then
-
-echo "You are eligible"
-
+if [ "$age" -ge 18 ]; then
+  echo "You are eligible"
 fi
+```
 
 Output:
 
+```
 You are eligible
+```
 
 **Easy way to remember**
 
-\-eq → equal
+```
+-eq → equal
+-ne → not equal
+-gt → greater than
+-lt → less than
+-ge → greater/equal
+-le → less/equal
+```
 
-\-ne → not equal
+---
 
-\-gt → greater than
-
-\-lt → less than
-
-\-ge → greater/equal
-
-\-le → less/equal
-
-**6\. Important: \[ \] in Conditions**
+## 6. Important: `[ ]` in Conditions
 
 You will frequently see:
 
-if \[ "\$age" -ge 18 \]; then
+```bash
+if [ "$age" -ge 18 ]; then
+```
 
 The spaces are important.
 
 ✅ Correct:
 
-\[ "\$age" -ge 18 \]
+```bash
+[ "$age" -ge 18 ]
+```
 
 ❌ Wrong:
 
-\["\$age" -ge 18\]
+```bash
+["$age" -ge 18]
+```
 
-Think of \[ ... \] as Bash's test syntax.
+Think of `[ ... ]` as Bash's test syntax.
 
-**7\. String Operators**
+---
+
+## 7. String Operators
 
 String operators are used to compare text.
 
-| **Operator** | **Meaning**           |
-| ------------ | --------------------- |
-| \=           | Strings are equal     |
-| !=           | Strings are not equal |
-| \-z          | String is empty       |
-| \-n          | String is not empty   |
+| Operator | Meaning                |
+|----------|-------------------------|
+| `=`      | Strings are equal       |
+| `!=`     | Strings are not equal   |
+| `-z`     | String is empty         |
+| `-n`     | String is not empty     |
 
 **Example — Equal**
 
+```bash
 name="Akhilesh"
-
-if \[ "\$name" = "Akhilesh" \]; then
-
-echo "Name matched"
-
+if [ "$name" = "Akhilesh" ]; then
+  echo "Name matched"
 fi
+```
 
 **Not equal**
 
+```bash
 environment="dev"
-
-if \[ "\$environment" != "production" \]; then
-
-echo "This is not production"
-
+if [ "$environment" != "production" ]; then
+  echo "This is not production"
 fi
+```
 
 **Check empty string**
 
+```bash
 name=""
-
-if \[ -z "\$name" \]; then
-
-echo "Name is empty"
-
+if [ -z "$name" ]; then
+  echo "Name is empty"
 fi
+```
 
 **Check non-empty string**
 
+```bash
 name="Akhilesh"
-
-if \[ -n "\$name" \]; then
-
-echo "Name is provided"
-
+if [ -n "$name" ]; then
+  echo "Name is provided"
 fi
+```
 
-**8\. Logical Operators**
+---
+
+## 8. Logical Operators
 
 Logical operators allow us to combine multiple conditions.
 
-| **Operator** | **Meaning** |
-| ------------ | ----------- |
-| &&           | AND         |
-| \`           |             |
-| !            | NOT         |
+| Operator | Meaning |
+|----------|---------|
+| `&&`     | AND     |
+| `\|\|`   | OR      |
+| `!`      | NOT     |
 
-**AND — &&**
+**AND — `&&`**
 
 Both conditions must be true.
 
-Example:
-
+```bash
 age=25
-
 has_id="yes"
-
-if \[ "\$age" -ge 18 \] && \[ "\$has_id" = "yes" \]; then
-
-echo "Allowed"
-
+if [ "$age" -ge 18 ] && [ "$has_id" = "yes" ]; then
+  echo "Allowed"
 else
-
-echo "Not allowed"
-
+  echo "Not allowed"
 fi
+```
 
 Think:
 
+```
 Age >= 18
-
-AND
-
+   AND
 ID = yes
-
-↓
-
+   ↓
 Allowed
+```
 
-**OR — ||**
+**OR — `||`**
 
 At least one condition must be true.
 
+```bash
 day="Saturday"
-
-if \[ "\$day" = "Saturday" \] || \[ "\$day" = "Sunday" \]; then
-
-echo "Weekend"
-
+if [ "$day" = "Saturday" ] || [ "$day" = "Sunday" ]; then
+  echo "Weekend"
 else
-
-echo "Weekday"
-
+  echo "Weekday"
 fi
+```
 
-**NOT — !**
+**NOT — `!`**
 
 Used to reverse a condition.
 
+```bash
 status="stopped"
-
-if \[ ! "\$status" = "running" \]; then
-
-echo "Application is not running"
-
+if [ ! "$status" = "running" ]; then
+  echo "Application is not running"
 fi
+```
 
-**9\. Control Statements**
+---
 
-Control statements allow a script to **make decisions**.
+## 9. Control Statements
 
-The important ones are:
+Control statements allow a script to **make decisions**. The important ones are:
 
-if
+- `if`
+- `if-else`
+- `if-elif-else`
+- `case`
 
-if-else
+---
 
-if-elif-else
-
-case
-
-**10\. if Statement**
-
-Syntax:
-
-if \[ condition \]; then
-
-commands
-
-fi
-
-Example:
-
-age=25
-
-if \[ "\$age" -ge 18 \]; then
-
-echo "You are an adult"
-
-fi
-
-If the condition is true, the command executes.
-
-**11\. if-else**
-
-Use else when you want to execute something when the condition is false.
-
-age=16
-
-if \[ "\$age" -ge 18 \]; then
-
-echo "Eligible"
-
-else
-
-echo "Not eligible"
-
-fi
-
-Output:
-
-Not eligible
-
-**12\. if-elif-else**
-
-When you have multiple conditions:
-
-marks=75
-
-if \[ "\$marks" -ge 90 \]; then
-
-echo "Grade A+"
-
-elif \[ "\$marks" -ge 75 \]; then
-
-echo "Grade A"
-
-elif \[ "\$marks" -ge 60 \]; then
-
-echo "Grade B"
-
-else
-
-echo "Need improvement"
-
-fi
-
-Output:
-
-Grade A
-
-**13\. Daily-Life Example — ATM**
-
-Let's create a simple ATM-like example.
-
-# !/bin/bash
-
-read -p "Enter your PIN: " pin
-
-if \[ "\$pin" = "1234" \]; then
-
-echo "PIN is correct"
-
-echo "Welcome to ATM"
-
-else
-
-echo "Incorrect PIN"
-
-fi
-
-**Flow**
-
-User enters PIN
-
-↓
-
-Is PIN correct?
-
-↙ ↘
-
-YES NO
-
-↓ ↓
-
-Welcome Denied
-
-This is a simple example of using:
-
-- read
-- variable
-- string comparison
-- if-else
-
-**14\. Daily-Life Example — Shopping Discount**
-
-# !/bin/bash
-
-read -p "Enter shopping amount: " amount
-
-if \[ "\$amount" -ge 5000 \]; then
-
-echo "You get 20% discount"
-
-elif \[ "\$amount" -ge 2000 \]; then
-
-echo "You get 10% discount"
-
-else
-
-echo "No discount"
-
-fi
-
-Example:
-
-Enter shopping amount: 3500
-
-You get 10% discount
-
-**15\. Daily-Life Example — Login**
-
-# !/bin/bash
-
-read -p "Enter username: " username
-
-read -s -p "Enter password: " password
-
-echo
-
-if \[ "\$username" = "admin" \] && \[ "\$password" = "admin123" \]; then
-
-echo "Login successful"
-
-else
-
-echo "Invalid username or password"
-
-fi
-
-This demonstrates:
-
-read
-
--
-
-string comparison
-
--
-
-AND operator
-
--
-
-if-else
-
-**For real applications, don't hard-code passwords like this.** This is only a learning example.
-
-**16\. case Statement**
-
-case is useful when we have **multiple possible values**.
-
-It is similar to switch statements in some programming languages.
+## 10. `if` Statement
 
 **Syntax**
 
-case "\$variable" in
+```bash
+if [ condition ]; then
+  commands
+fi
+```
 
-value1)
+**Example**
 
-commands
+```bash
+age=25
+if [ "$age" -ge 18 ]; then
+  echo "You are an adult"
+fi
+```
 
-;;
+If the condition is true, the command executes.
 
-value2)
+---
 
-commands
+## 11. `if-else`
 
-;;
+Use `else` when you want to execute something when the condition is false.
 
-\*)
-
-default commands
-
-;;
-
-esac
-
-Important:
-
-case → starts
-
-esac → ends
-
-esac is simply case spelled backward.
-
-**17\. Daily-Life Example — Menu**
-
-# !/bin/bash
-
-echo "1. Tea"
-
-echo "2. Coffee"
-
-echo "3. Juice"
-
-echo "4. Water"
-
-read -p "Choose an option: " choice
-
-case "\$choice" in
-
-1.
-
-echo "You selected Tea"
-
-;;
-
-1.
-
-echo "You selected Coffee"
-
-;;
-
-1.
-
-echo "You selected Juice"
-
-;;
-
-1.
-
-echo "You selected Water"
-
-;;
-
-\*)
-
-echo "Invalid option"
-
-;;
-
-esac
-
-If the user enters:
-
-2
+```bash
+age=16
+if [ "$age" -ge 18 ]; then
+  echo "Eligible"
+else
+  echo "Not eligible"
+fi
+```
 
 Output:
 
+```
+Not eligible
+```
+
+---
+
+## 12. `if-elif-else`
+
+When you have multiple conditions:
+
+```bash
+marks=75
+if [ "$marks" -ge 90 ]; then
+  echo "Grade A+"
+elif [ "$marks" -ge 75 ]; then
+  echo "Grade A"
+elif [ "$marks" -ge 60 ]; then
+  echo "Grade B"
+else
+  echo "Need improvement"
+fi
+```
+
+Output:
+
+```
+Grade A
+```
+
+---
+
+## 13. Daily-Life Example — ATM
+
+Let's create a simple ATM-like example.
+
+```bash
+#!/bin/bash
+read -p "Enter your PIN: " pin
+
+if [ "$pin" = "1234" ]; then
+  echo "PIN is correct"
+  echo "Welcome to ATM"
+else
+  echo "Incorrect PIN"
+fi
+```
+
+**Flow**
+
+```
+User enters PIN
+      ↓
+Is PIN correct?
+   ↙       ↘
+ YES        NO
+  ↓          ↓
+Welcome    Denied
+```
+
+This is a simple example of using:
+
+- `read`
+- variable
+- string comparison
+- `if-else`
+
+---
+
+## 14. Daily-Life Example — Shopping Discount
+
+```bash
+#!/bin/bash
+read -p "Enter shopping amount: " amount
+
+if [ "$amount" -ge 5000 ]; then
+  echo "You get 20% discount"
+elif [ "$amount" -ge 2000 ]; then
+  echo "You get 10% discount"
+else
+  echo "No discount"
+fi
+```
+
+Example:
+
+```
+Enter shopping amount: 3500
+You get 10% discount
+```
+
+---
+
+## 15. Daily-Life Example — Login
+
+```bash
+#!/bin/bash
+read -p "Enter username: " username
+read -s -p "Enter password: " password
+echo
+
+if [ "$username" = "admin" ] && [ "$password" = "admin123" ]; then
+  echo "Login successful"
+else
+  echo "Invalid username or password"
+fi
+```
+
+This demonstrates:
+
+```
+read + string comparison + AND operator + if-else
+```
+
+> **For real applications, don't hard-code passwords like this.** This is only a learning example.
+
+---
+
+## 16. `case` Statement
+
+`case` is useful when we have **multiple possible values**. It is similar to switch statements in some programming languages.
+
+**Syntax**
+
+```bash
+case "$variable" in
+  value1)
+    commands
+    ;;
+  value2)
+    commands
+    ;;
+  *)
+    default commands
+    ;;
+esac
+```
+
+**Important:** `case` → starts, `esac` → ends (`esac` is simply `case` spelled backward).
+
+---
+
+## 17. Daily-Life Example — Menu
+
+```bash
+#!/bin/bash
+echo "1. Tea"
+echo "2. Coffee"
+echo "3. Juice"
+echo "4. Water"
+read -p "Choose an option: " choice
+
+case "$choice" in
+  1)
+    echo "You selected Tea"
+    ;;
+  2)
+    echo "You selected Coffee"
+    ;;
+  3)
+    echo "You selected Juice"
+    ;;
+  4)
+    echo "You selected Water"
+    ;;
+  *)
+    echo "Invalid option"
+    ;;
+esac
+```
+
+If the user enters `2`, output:
+
+```
 You selected Coffee
+```
 
-**18\. Real-Time DevOps Use Case #1 — Check Service**
+---
 
-This is a very useful beginner DevOps script.
+## 18. Real-Time DevOps Use Case #1 — Check Service
 
-Suppose we want to check whether an application service is running.
+This is a very useful beginner DevOps script. Suppose we want to check whether an application service is running.
 
-# !/bin/bash
-
+```bash
+#!/bin/bash
 service_name="nginx"
 
-if systemctl is-active --quiet "\$service_name"; then
-
-echo "\$service_name is running"
-
+if systemctl is-active --quiet "$service_name"; then
+  echo "$service_name is running"
 else
-
-echo "\$service_name is not running"
-
+  echo "$service_name is not running"
 fi
+```
 
 **What happens?**
 
+```
 Check nginx
-
-↓
-
+     ↓
 Is it running?
+  ↙       ↘
+YES        NO
+ ↓          ↓
+Running   Not running
+```
 
-↙ ↘
+---
 
-YES NO
-
-↓ ↓
-
-Running Not running
-
-**19\. Real-Time DevOps Use Case #2 — Restart Service Automatically**
+## 19. Real-Time DevOps Use Case #2 — Restart Service Automatically
 
 We can make the previous example more useful.
 
-# !/bin/bash
-
+```bash
+#!/bin/bash
 service_name="nginx"
 
-if systemctl is-active --quiet "\$service_name"; then
-
-echo "\$service_name is running"
-
+if systemctl is-active --quiet "$service_name"; then
+  echo "$service_name is running"
 else
+  echo "$service_name is down"
+  echo "Starting $service_name..."
+  sudo systemctl start "$service_name"
 
-echo "\$service_name is down"
-
-echo "Starting \$service_name..."
-
-sudo systemctl start "\$service_name"
-
-if systemctl is-active --quiet "\$service_name"; then
-
-echo "\$service_name started successfully"
-
-else
-
-echo "Failed to start \$service_name"
-
+  if systemctl is-active --quiet "$service_name"; then
+    echo "$service_name started successfully"
+  else
+    echo "Failed to start $service_name"
+  fi
 fi
-
-fi
+```
 
 This is a simple example of **automated monitoring and recovery**.
 
-**20\. Real-Time DevOps Use Case #3 — Environment-Based Deployment**
+---
+
+## 20. Real-Time DevOps Use Case #3 — Environment-Based Deployment
 
 This is closer to CI/CD.
 
-# !/bin/bash
+```bash
+#!/bin/bash
+environment="$1"
 
-environment="\$1"
-
-if \[ -z "\$environment" \]; then
-
-echo "Usage: \$0 &lt;dev|staging|production&gt;"
-
-exit 1
-
+if [ -z "$environment" ]; then
+  echo "Usage: $0 <dev|staging|production>"
+  exit 1
 fi
 
-if \[ "\$environment" = "dev" \]; then
-
-echo "Deploying to DEV environment"
-
-elif \[ "\$environment" = "staging" \]; then
-
-echo "Deploying to STAGING environment"
-
-elif \[ "\$environment" = "production" \]; then
-
-echo "Deploying to PRODUCTION environment"
-
+if [ "$environment" = "dev" ]; then
+  echo "Deploying to DEV environment"
+elif [ "$environment" = "staging" ]; then
+  echo "Deploying to STAGING environment"
+elif [ "$environment" = "production" ]; then
+  echo "Deploying to PRODUCTION environment"
 else
-
-echo "Invalid environment"
-
-exit 1
-
+  echo "Invalid environment"
+  exit 1
 fi
+```
 
 Run:
 
+```bash
 ./deploy.sh dev
+```
 
 Output:
 
+```
 Deploying to DEV environment
+```
 
 Run:
 
+```bash
 ./deploy.sh production
+```
 
 Output:
 
+```
 Deploying to PRODUCTION environment
+```
 
-**21\. Real-Time DevOps Use Case #4 — Better with case**
+---
 
-The same deployment selection can be written using case.
+## 21. Real-Time DevOps Use Case #4 — Better with `case`
 
-# !/bin/bash
+The same deployment selection can be written using `case`.
 
-environment="\$1"
+```bash
+#!/bin/bash
+environment="$1"
 
-case "\$environment" in
-
-dev)
-
-echo "Deploying to DEV"
-
-;;
-
-staging)
-
-echo "Deploying to STAGING"
-
-;;
-
-production)
-
-echo "Deploying to PRODUCTION"
-
-;;
-
-\*)
-
-echo "Invalid environment"
-
-echo "Usage: \$0 &lt;dev|staging|production&gt;"
-
-exit 1
-
-;;
-
+case "$environment" in
+  dev)
+    echo "Deploying to DEV"
+    ;;
+  staging)
+    echo "Deploying to STAGING"
+    ;;
+  production)
+    echo "Deploying to PRODUCTION"
+    ;;
+  *)
+    echo "Invalid environment"
+    echo "Usage: $0 <dev|staging|production>"
+    exit 1
+    ;;
 esac
+```
 
 This is cleaner when there are many possible values.
 
-**22\. Real-Time DevOps Use Case #5 — Check Disk Usage**
+---
+
+## 22. Real-Time DevOps Use Case #5 — Check Disk Usage
 
 This is a very practical Linux/DevOps example.
 
-# !/bin/bash
+```bash
+#!/bin/bash
+usage=$(df / | awk 'NR==2 {print $5}' | tr -d '%')
+echo "Disk usage: $usage%"
 
-usage=\$(df / | awk 'NR==2 {print \$5}' | tr -d '%')
-
-echo "Disk usage: \$usage%"
-
-if \[ "\$usage" -ge 80 \]; then
-
-echo "WARNING: Disk usage is high"
-
-elif \[ "\$usage" -ge 90 \]; then
-
-echo "CRITICAL: Disk usage is very high"
-
+if [ "$usage" -ge 80 ]; then
+  echo "WARNING: Disk usage is high"
+elif [ "$usage" -ge 90 ]; then
+  echo "CRITICAL: Disk usage is very high"
 else
-
-echo "Disk usage is normal"
-
+  echo "Disk usage is normal"
 fi
+```
 
 **Important correction**
 
 When checking thresholds, you normally want the **higher threshold first**:
 
-if \[ "\$usage" -ge 90 \]; then
-
-echo "CRITICAL"
-
-elif \[ "\$usage" -ge 80 \]; then
-
-echo "WARNING"
-
+```bash
+if [ "$usage" -ge 90 ]; then
+  echo "CRITICAL"
+elif [ "$usage" -ge 80 ]; then
+  echo "WARNING"
 else
-
-echo "NORMAL"
-
+  echo "NORMAL"
 fi
+```
 
 So the better version is:
 
-# !/bin/bash
+```bash
+#!/bin/bash
+usage=$(df / | awk 'NR==2 {print $5}' | tr -d '%')
+echo "Disk usage: $usage%"
 
-usage=\$(df / | awk 'NR==2 {print \$5}' | tr -d '%')
-
-echo "Disk usage: \$usage%"
-
-if \[ "\$usage" -ge 90 \]; then
-
-echo "CRITICAL: Disk usage is very high"
-
-elif \[ "\$usage" -ge 80 \]; then
-
-echo "WARNING: Disk usage is high"
-
+if [ "$usage" -ge 90 ]; then
+  echo "CRITICAL: Disk usage is very high"
+elif [ "$usage" -ge 80 ]; then
+  echo "WARNING: Disk usage is high"
 else
-
-echo "Disk usage is normal"
-
+  echo "Disk usage is normal"
 fi
+```
 
-**23\. Real-Time DevOps Use Case #6 — Check Application URL**
+---
 
-You can use curl to check whether an application is responding.
+## 23. Real-Time DevOps Use Case #6 — Check Application URL
 
-# !/bin/bash
+You can use `curl` to check whether an application is responding.
 
-url="<http://localhost:8080>"
+```bash
+#!/bin/bash
+url="http://localhost:8080"
 
-if curl -s --fail "\$url" > /dev/null; then
-
-echo "Application is UP"
-
+if curl -s --fail "$url" > /dev/null; then
+  echo "Application is UP"
 else
-
-echo "Application is DOWN"
-
+  echo "Application is DOWN"
 fi
+```
 
 **Flow**
 
+```
 curl application
-
-↓
-
+       ↓
 HTTP request successful?
-
-↙ ↘
-
-YES NO
-
-↓ ↓
-
-UP DOWN
+   ↙         ↘
+ YES          NO
+  ↓            ↓
+ UP           DOWN
+```
 
 This type of check can be used as part of monitoring or deployment validation.
 
-**24\. Real-Time DevOps Use Case #7 — Docker Container Check**
+---
 
-# !/bin/bash
+## 24. Real-Time DevOps Use Case #7 — Docker Container Check
 
+```bash
+#!/bin/bash
 container="myapp"
 
-if docker ps --format '{{.Names}}' | grep -q "^\${container}\$"; then
-
-echo "\$container is running"
-
+if docker ps --format '{{.Names}}' | grep -q "^${container}$"; then
+  echo "$container is running"
 else
-
-echo "\$container is not running"
-
+  echo "$container is not running"
 fi
+```
 
 This demonstrates how shell scripting can automate a Docker health check.
 
-**25\. Combining read + Operators + if**
+---
+
+## 25. Combining `read` + Operators + `if`
 
 Let's create one complete beginner example.
 
-# !/bin/bash
-
+```bash
+#!/bin/bash
 read -p "Enter CPU usage percentage: " cpu
 
-if \[ "\$cpu" -ge 90 \]; then
-
-echo "CRITICAL: CPU usage is very high"
-
-elif \[ "\$cpu" -ge 80 \]; then
-
-echo "WARNING: CPU usage is high"
-
+if [ "$cpu" -ge 90 ]; then
+  echo "CRITICAL: CPU usage is very high"
+elif [ "$cpu" -ge 80 ]; then
+  echo "WARNING: CPU usage is high"
 else
-
-echo "CPU usage is normal"
-
+  echo "CPU usage is normal"
 fi
+```
 
 Example:
 
+```
 Enter CPU usage percentage: 95
-
 CRITICAL: CPU usage is very high
+```
 
 This is a good example to understand how DevOps monitoring scripts work.
 
-**26\. if vs case**
+---
 
-**Use if**
+## 26. `if` vs `case`
 
-When you're checking:
+**Use `if`** when you're checking:
 
-Greater than
+- Greater than
+- Less than
+- Equal to
+- Multiple conditions
+- Ranges
 
-Less than
+```bash
+if [ "$cpu" -ge 80 ]; then
+```
 
-Equal to
+**Use `case`** when you're matching one variable against several **specific values/patterns**.
 
-Multiple conditions
-
-Ranges
-
-Example:
-
-if \[ "\$cpu" -ge 80 \]; then
-
-**Use case**
-
-When you're matching one variable against several **specific values/patterns**.
-
-Example:
-
-case "\$environment" in
-
-dev)
-
-...
-
-;;
-
-staging)
-
-...
-
-;;
-
-production)
-
-...
-
-;;
-
+```bash
+case "$environment" in
+  dev)
+    ...
+    ;;
+  staging)
+    ...
+    ;;
+  production)
+    ...
+    ;;
 esac
+```
 
 **Easy way to remember**
 
-if
+```
+if   → Condition-based decision
+case → Value-based selection
+```
 
-↓
+---
 
-Condition-based decision
+## 27. Day-3 Complete Revision
 
-case
+```
+read               → Take input from user
+Operators          → Perform calculations / comparisons
+Comparison         → -eq -ne -gt -lt -ge -le
+String             → = != -z -n
+Logical            → && || !
+Control statements → if, if-else, if-elif-else, case
 
-↓
+DevOps usage:
+  - Service checks
+  - Disk monitoring
+  - Application health checks
+  - Deployment automation
+  - Docker checks
+  - CI/CD automation
+```
 
-Value-based selection
+---
 
-**27\. Day-3 Complete Revision**
+## Commands/Syntax to Practice Today
 
-read
-
-↓
-
-Take input from user
-
-Operators
-
-↓
-
-Perform calculations / comparisons
-
-Comparison
-
-↓
-
-\-eq -ne -gt -lt -ge -le
-
-String
-
-↓
-
-\= != -z -n
-
-Logical
-
-↓
-
-&& || !
-
-Control statements
-
-↓
-
-if
-
-if-else
-
-if-elif-else
-
-case
-
-DevOps usage
-
-↓
-
-Service checks
-
-Disk monitoring
-
-Application health checks
-
-Deployment automation
-
-Docker checks
-
-CI/CD automation
-
-**Commands/Syntax to Practice Today**
-
-\# Read
-
+```bash
+# Read
 read -p "Enter name: " name
 
-\# Arithmetic
+# Arithmetic
+sum=$((10 + 20))
 
-sum=\$((10 + 20))
+# Number comparison
+if [ "$age" -ge 18 ]; then
 
-\# Number comparison
+# String comparison
+if [ "$env" = "production" ]; then
 
-if \[ "\$age" -ge 18 \]; then
+# AND
+if [ "$cpu" -ge 80 ] && [ "$memory" -ge 80 ]; then
 
-\# String comparison
+# OR
+if [ "$env" = "dev" ] || [ "$env" = "staging" ]; then
 
-if \[ "\$env" = "production" \]; then
+# Empty string
+if [ -z "$name" ]; then
 
-\# AND
-
-if \[ "\$cpu" -ge 80 \] && \[ "\$memory" -ge 80 \]; then
-
-\# OR
-
-if \[ "\$env" = "dev" \] || \[ "\$env" = "staging" \]; then
-
-\# Empty string
-
-if \[ -z "\$name" \]; then
-
-\# Case
-
-case "\$env" in
-
-dev)
-
-echo "Development"
-
-;;
-
-production)
-
-echo "Production"
-
-;;
-
-\*)
-
-echo "Invalid"
-
-;;
-
+# Case
+case "$env" in
+  dev)
+    echo "Development"
+    ;;
+  production)
+    echo "Production"
+    ;;
+  *)
+    echo "Invalid"
+    ;;
 esac
+```
 
-**🎯 Interview line for Day 3**
+---
 
-**In shell scripting, I can use read to accept user input, variables to store values, operators to perform calculations and comparisons, and control statements such as if-else and case to make decisions. In DevOps, these concepts are useful for automation tasks such as service health checks, deployment scripts, disk monitoring, Docker checks, and CI/CD automation.**
+## 🎯 Interview line for Day 3
+
+> In shell scripting, I can use `read` to accept user input, variables to store values, operators to perform calculations and comparisons, and control statements such as `if-else` and `case` to make decisions. In DevOps, these concepts are useful for automation tasks such as service health checks, deployment scripts, disk monitoring, Docker checks, and CI/CD automation.
